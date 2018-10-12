@@ -9,6 +9,11 @@ import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Timer;
 
+
+import net.bak3dnet.robotics.display.RevDigitDisplay;
+import net.bak3dnet.robotics.display.modules.RapidDiagnosticsModule;
+import net.bak3dnet.robotics.display.modules.BatteryPercentModule;
+
 ///////////////IOSetup//////////////
 //	Drive Motors				  //
 //	PWM 0 = Drive Motor Right 1	  //
@@ -107,6 +112,10 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
+		
+		RevDigitDisplay display = RevDigitDisplay.getInstance();
+
+		display.setActiveModule(new RapidDiagnosticsModule(new BatteryPercentModule(12D)));	
 		
 		//Drive Motors
 		driveMotor1 = new Spark(0);
@@ -684,3 +693,26 @@ public class Robot extends IterativeRobot {
 		}
 	}
 }
+
+/*
+QUOTE FROM CHIEF DELPHI WEBSITE:::::
+
+I've done a bit of searching on this myself as someone who is using encoders for the first time on a robot.
+
+What doesn't seem to be mentioned very often is that each encoder requires 2 DIO ports on the RoboRio.
+If I'm correct, I don't believe it matters which port of the 2 ports the ground and the +5v go into, but the
+two signal wires then go onto the signal pins for the 2 dedicated ports for that encoder. 
+
+NOW BRENDEN WORDS:::::
+
+Plug the encoder wire thing into the motor.  Plug wires in as following:
+Red -> top
+Black -> bottom.
+Yellow -> middle on one
+Green -> middle on the one next to yellow
+			(eg. Red top port 4, Black bottom port 4, Green middle port 4, Yellow middle port 5)
+		ANY CONFIGURATION OF THAT, CONFINING TO PLACEMENT, IS OKAY!  NO RED IN BOTTOM
+		NO BLACK IN TOP
+		BLACK COULD BE IN PORT 5 AND RED COULD BE PORT 4, THAT IS OKAY!
+
+*/
